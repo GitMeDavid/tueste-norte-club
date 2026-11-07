@@ -13,6 +13,12 @@ const metodos = [
     { nombre: "Aeropress", slug: "aeropress" },
 ];
 
+export async function generateStaticParams() {
+  return metodos.map((metodo) => ({
+    slug: metodo.slug,
+  }));
+}
+
 export default async function MetodoPage({ params }: MetodoPageProps) {
     const { slug } = await params;
 

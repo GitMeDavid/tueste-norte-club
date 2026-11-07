@@ -29,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <nav className="flex gap-6 bg-amber-900 p-4 text-white">
           <Link href="/">Inicio</Link>
           <Link href="/metodos">Métodos</Link>
+          <Link href="/cafes">Cafés</Link>  
         </nav>
 
         {children}
