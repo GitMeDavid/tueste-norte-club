@@ -158,3 +158,117 @@ Este proyecto ha permitido poner en práctica los fundamentos de Next.js y React
 Se ha aprendido a organizar una aplicación en componentes y rutas, compartir información entre páginas, gestionar interacciones del usuario y aplicar estilos adaptables a diferentes dispositivos.
 
 El proyecto se ha desarrollado como práctica formativa de la Semana 6 de CodeNode.
+
+---
+
+# Tueste Norte Club - Semana 7
+
+## 9. Evolución del proyecto
+
+Durante la Semana 7 se ha ampliado Tueste Norte Club
+para incorporar persistencia de datos mediante SQLite
+y Drizzle ORM.
+
+El objetivo es que los planes, clientes y pedidos se
+almacenen en una base de datos real, en lugar de
+depender únicamente de datos escritos en el código.
+
+Se han desarrollado las siguientes funcionalidades:
+
+- Tres tablas relacionadas: planes, clientes y pedidos.
+- Claves foráneas para relacionar los registros.
+- Restricción de email único para los clientes.
+- Script de seed para insertar datos de ejemplo.
+- Formulario de alta mediante una Server Action.
+- Validación de datos en el servidor.
+- Comprobación de correos electrónicos duplicados.
+- Selector de planes cargado desde SQLite.
+- Listado de pedidos mediante un Server Component.
+- Consulta de clientes relacionados mediante Drizzle.
+- API GET /api/pedidos que devuelve datos en JSON.
+
+## 10. Instalación y preparación de la base de datos
+
+El proyecto utiliza SQLite como base de datos y
+Drizzle ORM para realizar las consultas.
+
+Para preparar el proyecto desde cero:
+
+1. Clonar el repositorio de GitHub.
+2. Abrir una terminal en la carpeta del proyecto.
+3. Instalar las dependencias:
+
+```bash
+npm install
+```
+
+4. Crear las tablas de la base de datos:
+
+```bash
+npx drizzle-kit push
+```
+
+5. Insertar los datos de ejemplo:
+
+```bash
+npx tsx src/db/seed.ts
+```
+
+6. Iniciar el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+La base de datos se almacena localmente y no se
+incluye en el repositorio de GitHub.
+
+El esquema y el script de seed permiten reconstruirla.
+
+## 11. API de pedidos
+
+Se ha creado un Route Handler en Next.js que permite
+consultar los pedidos almacenados en SQLite.
+
+### Endpoint
+
+- URL: http://localhost:3000/api/pedidos
+- Método HTTP: GET
+- Archivo: app/api/pedidos/route.ts
+- Formato de respuesta: JSON
+
+La API consulta los pedidos mediante Drizzle ORM e
+incluye los datos del cliente asociado a cada pedido.
+
+### Ejemplo de respuesta
+
+```json
+[
+  {
+    "id": 1,
+    "clienteId": 1,
+    "cafe": "Etiopía Sidamo",
+    "mes": "2026-11",
+    "estado": "pendiente",
+    "cliente": {
+      "id": 1,
+      "nombre": "antonio garcía",
+      "email": "antonio.prueba@example.com",
+      "planId": 1
+    }
+  }
+]
+```
+
+### Prueba con curl
+
+Con el servidor Next.js funcionando, ejecutar:
+
+```bash
+curl http://localhost:3000/api/pedidos
+```
+
+El servidor devuelve los pedidos en formato JSON,
+incluyendo la información del cliente relacionado.
+
+Si no existen pedidos, devuelve un array vacío: [].
