@@ -53,3 +53,5 @@ export const pedidosRelations = relations(pedidos, ({ one }) => ({
     references: [clientes.id],
   }),
 }));
+
+export * from "./auth-schema";
