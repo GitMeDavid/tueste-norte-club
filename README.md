@@ -272,3 +272,46 @@ El servidor devuelve los pedidos en formato JSON,
 incluyendo la información del cliente relacionado.
 
 Si no existen pedidos, devuelve un array vacío: [].
+---
+
+# Tueste Norte Club - Semana 8
+
+## 12. Ejercicio 1 - Mi perfil con better-auth
+
+Durante la Semana 8 se ha incorporado un sistema de autenticación de usuarios al proyecto Tueste Norte Club mediante better-auth.
+
+### Tecnologías utilizadas
+
+- Next.js y TypeScript.
+- better-auth para la autenticación.
+- Drizzle ORM para conectar la autenticación con la base de datos.
+- SQLite para almacenar usuarios, cuentas y sesiones.
+
+### Funcionalidades desarrolladas
+
+- Configuración de better-auth con el adaptador de Drizzle.
+- Creación de las tablas de autenticación mediante migraciones.
+- Creación del Route Handler de autenticación.
+- Página `/registro` para crear cuentas de usuario.
+- Página `/login` para iniciar sesión.
+- Página protegida `/club/perfil`, que muestra el nombre y el correo del usuario.
+- Lectura de la sesión desde un Server Component.
+- Redirección a `/login` cuando no existe una sesión.
+- Botón para cerrar sesión.
+- Barra de navegación que muestra el nombre del usuario autenticado o el enlace «Entrar».
+
+### Comprobaciones realizadas
+
+- Registro de un usuario e inicio de sesión correctos.
+- Comprobación de la cookie `better-auth.session_token` en Chrome DevTools.
+- Verificación del atributo HttpOnly de la cookie.
+- Comprobación de los registros de sesión en la tabla `session` mediante Drizzle Studio.
+- Verificación de que las contraseñas se almacenan como hashes en la tabla `account`.
+
+### Seguridad
+
+El archivo `.gitignore` excluye los archivos de variables de entorno y la carpeta de datos para evitar incluir información sensible en el repositorio.
+
+### Commit del ejercicio
+
+Se ha creado un commit específico para el Ejercicio 1, incluyendo las respuestas a las preguntas sobre el hash de contraseñas y las cookies HttpOnly.
