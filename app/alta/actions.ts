@@ -5,11 +5,20 @@ import { revalidatePath } from "next/cache";
 import { db } from "../../src/db";
 import { clientes, planes } from "../../src/db/schema";
 import { eq } from "drizzle-orm";
-
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 export async function registrarCliente(
   estadoAnterior: { error: string },
   formData: FormData,
 ): Promise<{ error: string }> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { error: "Debes iniciar sesión para suscribirte." };
+  }
+
   const nombre = formData.get("nombre");
   const email = formData.get("email");
   const planId = formData.get("planId");
