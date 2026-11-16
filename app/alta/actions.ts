@@ -19,8 +19,8 @@ export async function registrarCliente(
     return { error: "Debes iniciar sesión para suscribirte." };
   }
 
-  const nombre = formData.get("nombre");
-  const email = formData.get("email");
+  const nombre = session.user.name;
+  const email = session.user.email;
   const planId = formData.get("planId");
 
   if (typeof nombre !== "string" || nombre.trim() === "") {
@@ -55,11 +55,20 @@ export async function registrarCliente(
   if (!planEncontrado) {
     throw new Error("El plan seleccionado no existe.");
   }
+  const suscripcionExistente = await db
+    .select()
+    .from(clientes)
+    .where(eq(clientes.userId, session.user.id))
+    .get();
 
+  if (suscripcionExistente) {
+    return { error: "Ya tienes una suscripción registrada." };
+  }
   const clienteExistente = await db
     .select()
     .from(clientes)
     .where(eq(clientes.email, email.trim()))
+
     .get();
 
   if (clienteExistente) {
@@ -69,6 +78,7 @@ export async function registrarCliente(
   await db.insert(clientes).values({
     nombre: nombre.trim(),
     email: email.trim(),
+    userId: session.user.id,
     planId: numeroPlan,
   });
 

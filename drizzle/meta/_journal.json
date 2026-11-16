@@ -8,6 +8,13 @@
       "when": 1794419996151,
       "tag": "0000_ordinary_human_cannonball",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1794772531896,
+      "tag": "0001_careful_jubilee",
+      "breakpoints": true
     }
   ]
 }

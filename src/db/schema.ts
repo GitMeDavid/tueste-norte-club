@@ -13,6 +13,7 @@ export const clientes = sqliteTable("clientes", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   nombre: text("nombre").notNull(),
   email: text("email").notNull().unique(),
+  userId: text("user_id").unique(),
   planId: integer("plan_id")
     .notNull()
     .references(() => planes.id),
