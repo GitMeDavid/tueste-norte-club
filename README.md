@@ -315,3 +315,65 @@ El archivo `.gitignore` excluye los archivos de variables de entorno y la carpet
 ### Commit del ejercicio
 
 Se ha creado un commit específico para el Ejercicio 1, incluyendo las respuestas a las preguntas sobre el hash de contraseñas y las cookies HttpOnly.
+
+
+## 13. Ejercicio 2 - Cloudflare Workers
+
+Se ha creado y desplegado un Worker independiente llamado `hola-workers` para practicar el despliegue de aplicaciones en Cloudflare Workers.
+
+Repositorio: https://github.com/GitMeDavid/hola-workers
+
+## 14. Encargo final - Semana 8
+
+Se ha ampliado Tueste Norte Club con autenticación de usuarios mediante Better Auth y persistencia de datos en Cloudflare D1 mediante Drizzle ORM.
+
+### Funcionalidades
+
+- Registro, inicio y cierre de sesión.
+- Protección de las páginas privadas del club.
+- Consulta de sesiones desde el servidor.
+- Suscripciones vinculadas al usuario autenticado.
+- Protección de la API de pedidos para evitar consultar datos de otros usuarios.
+- Despliegue de la aplicación en Cloudflare Workers.
+- Migraciones de la base de datos D1.
+- Configuración de secretos de producción sin incluirlos en GitHub.
+
+### Aplicación publicada
+
+https://tueste-norte-club.hola-workers-david.workers.dev
+
+### Ejecución local
+
+```bash
+npm install
+npm run dev
+```
+
+La aplicación local utiliza las variables de entorno necesarias para Better Auth y una base de datos SQLite. Estas variables se configuran en `.env.local`, que no debe subirse al repositorio.
+
+### Cloudflare Workers y D1
+
+Para aplicar las migraciones de D1 en el entorno local:
+
+```bash
+npx wrangler d1 migrations apply tueste-norte-club-db --local
+```
+
+Para iniciar el Worker localmente, después de generar la compilación:
+
+```bash
+npx opennextjs-cloudflare build
+npx wrangler dev
+```
+
+La aplicación publicada utiliza Cloudflare D1 y los secretos `BETTER_AUTH_SECRET` y `BETTER_AUTH_URL`, configurados en Cloudflare sin guardar sus valores en el repositorio.
+
+### Comprobaciones realizadas
+
+- Registro e inicio de sesión en la aplicación publicada.
+- Acceso al perfil del usuario autenticado.
+- Cierre de sesión.
+- Visualización de los tres planes de suscripción.
+- Registro y consulta de una suscripción desde el perfil.
+- Comprobación de que la API de pedidos exige autenticación y devuelve únicamente los pedidos asociados al usuario.
+  
