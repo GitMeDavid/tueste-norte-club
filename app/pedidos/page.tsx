@@ -1,12 +1,37 @@
-import { db } from "../../src/db";
-import { pedidos } from "../../src/db/schema";
+import { obtenerBaseDeDatosCloudflare } from "@/src/db/database";
+import { obtenerAuthCloudflare } from "@/lib/auth-cloudflare";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { clientes, pedidos } from "@/src/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function PaginaPedidos() {
-  const listaPedidos = await db.query.pedidos.findMany({
-    with: {
-      cliente: true,
-    },
+  const auth = await obtenerAuthCloudflare();
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  const db = await obtenerBaseDeDatosCloudflare();
+
+  const clienteActual = await db
+    .select()
+    .from(clientes)
+    .where(eq(clientes.userId, session.user.id))
+    .get();
+
+  const listaPedidos = clienteActual
+    ? await db.query.pedidos.findMany({
+        where: (pedidos, { eq }) => eq(pedidos.clienteId, clienteActual.id),
+        with: {
+          cliente: true,
+        },
+      })
+    : [];
 
   return (
     <main>

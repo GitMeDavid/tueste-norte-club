@@ -1,12 +1,15 @@
-import { auth } from "@/lib/auth";
+import { obtenerAuthCloudflare } from "@/lib/auth-cloudflare";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import BotonCerrarSesion from "@/app/components/BotonCerrarSesion";
-import { db } from "@/src/db";
+import { obtenerBaseDeDatosCloudflare } from "@/src/db/database";
 import { clientes } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 
 export default async function PerfilPage() {
+  const auth = await obtenerAuthCloudflare();
+  const db = await obtenerBaseDeDatosCloudflare();
+  
   const session = await auth.api.getSession({
     headers: await headers(),
   });

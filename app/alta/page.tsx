@@ -1,13 +1,14 @@
 import FormularioAlta from "./FormularioAlta";
 
-import { db } from "../../src/db";
+
 import { planes } from "../../src/db/schema";
 
-import { auth } from "@/lib/auth";
+import { obtenerAuthCloudflare } from "@/lib/auth-cloudflare";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
+import { obtenerBaseDeDatosCloudflare } from "@/src/db/database";
 export default async function PaginaAlta() {
+  const auth = await obtenerAuthCloudflare();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -15,6 +16,7 @@ export default async function PaginaAlta() {
   if (!session) {
     redirect("/login");
   }
+  const db = await obtenerBaseDeDatosCloudflare();
   const listaPlanes = await db.select().from(planes);
 
   return (

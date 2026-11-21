@@ -2,15 +2,17 @@
 
 import { revalidatePath } from "next/cache";
 
-import { db } from "../../src/db";
+import { obtenerBaseDeDatosCloudflare } from "@/src/db/database";
 import { clientes, planes } from "../../src/db/schema";
 import { eq } from "drizzle-orm";
-import { auth } from "@/lib/auth";
+import { obtenerAuthCloudflare } from "@/lib/auth-cloudflare";
 import { headers } from "next/headers";
 export async function registrarCliente(
   estadoAnterior: { error: string },
   formData: FormData,
 ): Promise<{ error: string }> {
+  const auth = await obtenerAuthCloudflare();
+  const db = await obtenerBaseDeDatosCloudflare();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
